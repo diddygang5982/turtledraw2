@@ -1,0 +1,85 @@
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turtle Draw</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+        #controls {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Turtle Draw</h1>
+    <canvas id="drawingCanvas" width="500" height="500"></canvas>
+    <div id="controls">
+        <label for="color">Color:</label>
+        <input type="color" id="color" value="#000000">
+        <label for="penSize">Pen Size:</label>
+        <input type="number" id="penSize" value="2" min="1" max="10">
+        <button id="clearCanvas">Clear</button>
+    </div>
+    <script>
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('color');
+        const penSizeInput = document.getElementById('penSize');
+        const clearButton = document.getElementById('clearCanvas');
+
+        let drawing = false;
+        let penColor = colorPicker.value;
+        let penSize = parseInt(penSizeInput.value);
+
+        canvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (drawing) {
+                ctx.strokeStyle = penColor;
+                ctx.lineWidth = penSize;
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            drawing = false;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            drawing = false;
+        });
+
+        colorPicker.addEventListener('input', (e) => {
+            penColor = e.target.value;
+        });
+
+        penSizeInput.addEventListener('input', (e) => {
+            penSize = parseInt(e.target.value);
+        });
+
+        clearButton.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+    </script>
+</body>
+</html>
+Explanation:
+HTML Structure:
